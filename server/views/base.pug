@@ -1,0 +1,70 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    title Comparison Builder | Comparison Name
+
+    link(rel='stylesheet' href='/css/main.css')
+    link(rel='stylesheet' href='/css/base.css')
+    link(rel='stylesheet' href='/css/spinningLoader.css')
+    link(rel='stylesheet' href='/css/floatingContainer.css')
+    block styles
+    
+    link(rel='preconnect' href='https://fonts.googleapis.com')
+    link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap' rel='stylesheet')
+
+  body
+    //- include floating-containers/_floatingContainerBase
+
+    .page
+      .sidebar
+        svg.icon.croaker-logo
+          use(xlink:href='/img/svgs/icons.svg#croaker-logo')
+        ul.sidebar-options
+          li
+            a(href="/feed")
+              svg.icon
+                use(xlink:href='/img/svgs/icons.svg#home')
+              span Feed
+
+          if currentUser
+            li
+              a
+                svg.icon
+                  use(xlink:href='/img/svgs/icons.svg#bell')
+                span Notifications
+            li
+              a
+                svg.icon
+                  use(xlink:href='/img/svgs/icons.svg#bookmark')
+                span Saved
+            li
+              a(href=`/user/${currentUser.nickname}`)
+                svg.icon
+                  use(xlink:href='/img/svgs/icons.svg#user')
+                span Profile
+
+        if currentUser
+          button.post Croak
+
+          .sign-container
+            button.signout Sign Out
+        else
+          .sign-container
+            button.signin Sign In
+            button.signup Sign Up
+
+      .content-container
+        block content
+
+      .discover-container
+        .search-container
+          svg.icon
+            use(xlink:href='/img/svgs/icons.svg#magnifying-glass')
+          input.search(type='text' placeholder='Search')
+        .trending-topics-container
+          h1 Trending topics
+
+    script(src='/bundle.js')

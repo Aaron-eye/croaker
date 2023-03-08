@@ -1,0 +1,75 @@
+@import url("variables.css");
+
+.account-details {
+  width: 100%;
+  padding: 2rem 8rem;
+  margin: 0;
+
+  background-color: white;
+  border-radius: 5px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.account-details .photo-and-nick {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.account-details .user-photo {
+  width: 8rem;
+  height: 8rem;
+}
+
+.account-details .user-name {
+  margin: 0;
+  font-weight: 800;
+  font-size: 2.5rem;
+  color: var(--dark-text);
+}
+
+.bio {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.related-people {
+  margin: 0 auto;
+  display: flex;
+  gap: 2rem;
+  /*justify-content: center;*/
+}
+
+.related-people > * {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.account-nav {
+  padding: 0.8rem;
+  margin: 2rem 0 0 0;
+  display: flex;
+  justify-content: center;
+}
+
+.account-nav button {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark-text-2);
+}
+
+.user-content {
+  padding: 0;
+  margin: 0;
+}
+
+.user-content > * {
+  padding: 1.5rem;
+
+  background-color: white;
+  border-radius: 5px;
+}
