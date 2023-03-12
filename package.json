@@ -5,10 +5,17 @@
   "main": "dist/server/server.js",
   "type": "module",
   "types": "types/global.d.ts",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
+    "client-install": "cd client && npm install",
+    "server-install": "cd server && npm install",
+    "install-all-deps": "npm i && concurrently \"npm run server-install\" \"npm run client-install\"",
     "start": "node dist/server/server.js",
     "build:server": "tsc",
-    "build:client": "parcel build ./dist/public/src/index.js --out-dir ./dist/public --out-file bundle.js",
+    "build:client": "parcel build ./dist/client/src/index.js --out-dir ./dist/client --out-file bundle.js",
     "build": "npm run build:server && npm run build:client",
     "dev": "nodemon -e ts,js --exec 'npm run build && npm run start' --ignore dist"
   },
@@ -34,19 +41,14 @@
     "@types/validator": "^13.7.12",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
+    "concurrently": "^7.6.0",
     "css-loader": "^6.7.3",
     "eslint": "^8.35.0",
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-typescript": "^0.14.0",
-    "grunt": "^1.6.1",
-    "grunt-svg-sprite": "^2.0.1",
     "npm-run-all": "^4.1.5",
     "parcel-bundler": "^1.12.5",
-    "prettier": "^1.17.0",
-    "style-loader": "^3.3.1",
-    "tailwindcss": "^3.2.6",
-    "ts-loader": "^9.4.2",
     "typescript": "^4.9.5"
   },
   "dependencies": {
@@ -59,6 +61,7 @@
     "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
     "handlebars": "^4.7.7",
+    "handlebars-layouts": "^3.1.4",
     "helmet": "^6.0.1",
     "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.0",

@@ -1,6 +1,4 @@
 config.env
 node_modules
 dist
-old-files
 .cache
-package-lock.json

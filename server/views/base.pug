@@ -8,15 +8,14 @@ html
     link(rel='stylesheet' href='/css/main.css')
     link(rel='stylesheet' href='/css/base.css')
     link(rel='stylesheet' href='/css/spinningLoader.css')
-    link(rel='stylesheet' href='/css/floatingContainer.css')
+    link(rel='stylesheet' href='/css/overlay.css')
     block styles
     
     link(rel='preconnect' href='https://fonts.googleapis.com')
     link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
     link(href='https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap' rel='stylesheet')
-
   body
-    //- include floating-containers/_floatingContainerBase
+    //- include overlays/_overlayBase
 
     .page
       .sidebar
@@ -50,11 +49,11 @@ html
           button.post Croak
 
           .sign-container
-            button.signout Sign Out
+            button.signout-btn Sign Out
         else
           .sign-container
-            button.signin Sign In
-            button.signup Sign Up
+            button.signin-btn Sign In
+            button.signup-btn Sign Up
 
       .content-container
         block content

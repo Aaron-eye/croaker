@@ -23,16 +23,32 @@ app.set("views", "server/views");
 
 // GLOBAL MIDDLEWARES
 // Serving static files
-//app.use(express.static(`public`));
-app.use(express.static("dist/public"));
-app.use(express.static("public"));
+//app.use(express.static(`client`));
+app.use(express.static("dist/client"));
+app.use(express.static("client"));
 
 // Parsers
 app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
 
 // Set security HTTP headers
-app.use(helmet());
+const nonce = crypto.randomBytes(16).toString("hex");
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", `'nonce-${nonce}'`],
+    },
+  })
+);
+
+// Extra headers
+app.use((req, res, next) => {
+  const nonce = crypto.randomBytes(16).toString("hex");
+  res.setHeader("Content-Security-Policy", `script-src 'self' 'unsafe-eval'`);
+  res.locals.nonce = nonce;
+  next();
+});
 
 // Development logging
 /*if (process.env.NODE_ENV === "development") {
@@ -56,13 +72,6 @@ app.use(
     whitelist: [],
   })
 );
-
-// Nonce
-const nonce = crypto.randomBytes(16).toString("hex");
-app.use((req, res, next) => {
-  res.setHeader("Content-Security-Policy", `script-src 'self' 'unsafe-eval'`);
-  next();
-});
 
 // Routes
 app.use(getLoggedUser);

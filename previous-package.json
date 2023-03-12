@@ -1,0 +1,35 @@
+{
+  "name": "croaker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server/server.js",
+  "type": "module",
+  "types": "types/global.d.ts",
+  "workspaces": ["client", "server"],
+  "scripts": {
+    "client-install": "cd client && npm install",
+    "server-install": "cd server && npm install",
+    "install-all-deps": "npm i && concurrently \"npm run server-install\" \"npm run client-install\"",
+    "start": "node dist/server/server.js",
+    "build:server": "tsc",
+    "build:client": "parcel build ./dist/client/src/index.js --out-dir ./dist/client --out-file bundle.js",
+    "build": "npm run build:server && npm run build:client",
+    "dev": "nodemon -e ts,js --exec 'npm run build && npm run start' --ignore dist"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": ["twitter", "social media"],
+  "author": "aaroneye",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.35.0",
+    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-typescript": "^0.14.0",
+    "npm-run-all": "^4.1.5",
+    "parcel-bundler": "^1.12.5",
+    "typescript": "^4.9.5",
+    "concurrently": "^7.6.0"
+  }
+}

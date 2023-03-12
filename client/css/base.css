@@ -1,0 +1,221 @@
+@import url("variables.css");
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+}
+
+p {
+  color: var(--dark-text);
+}
+
+button {
+  background-color: transparent;
+  border: none;
+}
+
+.page {
+  height: 100%;
+  max-width: 80rem;
+  margin: 0 auto 0;
+
+  display: grid;
+  grid-template-columns: 4fr 10fr 5fr;
+
+  overflow: hidden;
+
+  position: relative;
+}
+
+.page > * {
+  padding-top: 1.2rem;
+}
+
+.sidebar {
+  padding-right: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar-options {
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-options li {
+  margin-bottom: 0.25rem;
+}
+
+.sidebar-options span {
+  margin: auto 0.8rem auto;
+
+  margin-top: auto;
+  margin-bottom: auto;
+
+  font-size: 1rem;
+  font-weight: 500;
+
+  color: var(--dark-text);
+}
+
+.sidebar-options svg {
+  width: 2rem;
+  height: 2rem;
+
+  color: var(--dark-text);
+}
+
+.sidebar-options a {
+  padding: 0.75rem 1rem;
+  border-radius: 100px;
+
+  background-color: transparent;
+  transition: background-color 100ms linear;
+
+  display: flex;
+}
+
+.sidebar-options a:hover {
+  background-color: var(--light-green);
+
+  transition: background-color 100ms linear;
+}
+
+.post {
+  padding: 1rem;
+
+  font-weight: 700;
+  font-size: 1.25rem;
+
+  color: var(--light-green);
+  border-radius: 100px;
+
+  background-color: var(--primary);
+  transition: background-color 100ms linear;
+}
+
+.post:hover {
+  background-color: var(--primary-dark);
+  transition: background-color 100ms linear;
+}
+
+.sign-container {
+  margin: auto auto 1.2rem;
+
+  width: 75%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sign-container button {
+  padding: 0.5rem;
+
+  font-weight: 700;
+  font-size: 1rem;
+
+  border-radius: 100px;
+
+  background-color: var(--light-green);
+  transition: background-color 100ms linear;
+
+  color: var(--dark-text);
+  background-color: var(--light-green);
+}
+
+.sign-container button:hover {
+  background-color: var(--gray);
+
+  transition: background-color 100ms linear;
+}
+
+.sign-container .signup-btn {
+  color: var(--light-green);
+  background-color: var(--primary);
+}
+
+.sign-container .signup-btn:hover {
+  background-color: var(--primary-dark);
+
+  transition: background-color 100ms linear;
+}
+
+.content-container {
+  background-color: var(--light-green);
+
+  overflow-y: auto;
+  white-space: nowrap;
+
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.content-header {
+  display: flex;
+  padding: 0;
+  justify-content: space-around;
+}
+
+.content-header button {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dark-text-2);
+}
+
+.discover-container {
+  padding-left: 2rem;
+}
+
+.search-container {
+  height: 3rem;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+
+  display: flex;
+  gap: 0.75rem;
+  background-color: var(--light-green);
+}
+
+.search-container svg {
+  width: 1.2rem;
+  width: 1.2rem;
+
+  color: var(--dark-text-2);
+}
+
+.search-container .search {
+  flex: 1 0 auto;
+  border: none;
+  background-color: transparent;
+}
+
+.search-container .search::placeholder {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--light-text);
+}
+
+.croaker-logo {
+  width: 3rem;
+  height: 3rem;
+
+  margin: 0 auto;
+
+  fill: var(--primary-dark);
+}
+
+.trending-topics-container {
+  margin-top: 2rem;
+}
+
+.trending-topics-container h1 {
+  font-size: 1.5rem;
+  color: var(--dark-text);
+}

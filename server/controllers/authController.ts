@@ -12,6 +12,7 @@ dotenv.config({ path: "config.env" });
 
 const JWT_SECRET: any = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
+const JWT_COOKIE_EXPIRES_IN: any = process.env.JWT_COOKIE_EXPIRES_IN;
 
 const signToken = (id: string) => {
   return jwt.sign({ id }, JWT_SECRET, {
@@ -27,8 +28,11 @@ const createSendToken = (
 ) => {
   const token = signToken(user._id);
 
+  const signinExpirationDate = new Date(
+    Date.now() + JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 30
+  );
   res.cookie("jwt", token, {
-    expires: new Date(Date.now() + 24 * 60 * 60 * 30),
+    expires: signinExpirationDate,
     httpOnly: true,
     secure: req.secure || req.headers["x-forwarded-proto"] === "https",
   });
@@ -40,6 +44,7 @@ const createSendToken = (
     token,
     data: {
       user,
+      signinExpirationDate,
     },
   });
 };

@@ -11,15 +11,20 @@ const existingUserPages = new Set(["userCroaks"]);
 export const getPage = catchAsync(async (req, res, next) => {
   const currentUser = req.user;
 
-  if (req.params.page === "favicon.ico") {
+  /*if (req.params.page === "favicon.ico") {
     return next();
-  }
+  }*/
 
   const page = req.params.page;
   if (!existingPages.has(page))
     return next(new AppError("Page not found", 404));
 
-  res.status(200).render(page, { currentUser });
+  res.status(200).render(page, {
+    currentUser,
+    window: {
+      test: "Hey!",
+    },
+  });
 });
 
 export const getUserPage = catchAsync(async (req, res, next) => {
