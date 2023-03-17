@@ -38,7 +38,7 @@ const DB = process.env.DATABASE.replace(
 
   process.on("unhandledRejection", (err: any) => {
     console.log("UNHANDLED REJECTION! 💥 Shutting down...");
-    console.log(err.name, err.message);
+    console.log(err);
     server.close(() => {
       process.exit(1);
     });

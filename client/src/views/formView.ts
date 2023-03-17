@@ -6,6 +6,46 @@ export default class FormView {
     this.formElement = formElement;
   }
 
+  setFieldLimit(field: string, charLimit: number) {
+    const formField = this._getFormField(field);
+    if (!formField)
+      throw new Error(`The "${field}" field doesn't exist in this form!`);
+
+    formField.maxLength = charLimit;
+  }
+
+  setInputCounter(field: string, counter: string, maxLength: number) {
+    const counterElement = this.formElement.querySelector(`.${counter}`);
+    if (!counterElement)
+      throw new Error(`The "${counter}" counter doesn't exist!`);
+
+    const currentLengthElement =
+      counterElement.querySelector(".current-length");
+    if (!currentLengthElement)
+      throw new Error(
+        `The current length element doesn't exist in the "${counter}" counter!`
+      );
+
+    const maxLengthElement = counterElement.querySelector(".max-lenght");
+    if (!maxLengthElement)
+      throw new Error(
+        `The max length element doesn't exist in the "${counter}" counter!`
+      );
+
+    const formField = this._getFormField(field);
+
+    maxLengthElement.textContent = String(maxLength);
+
+    formField.addEventListener("input", () => {
+      const currentLength = formField.value.length;
+      currentLengthElement.textContent = String(currentLength);
+
+      if (currentLength >= maxLength)
+        counterElement.classList.add("limit-reached");
+      else counterElement.classList.remove("limit-reached");
+    });
+  }
+
   addSubmitListener(submitHandler: EventListener) {
     this.formElement.addEventListener("submit", submitHandler);
   }
@@ -31,11 +71,10 @@ export default class FormView {
 
   displaySuccessMessage() {}
 
-  displayInputBugs(err: any) {
-    const fieldBugs = err.response.data.specifications;
+  displayInputErrors(inputIssues: any) {
     const formInputs = this._getInputs();
 
-    const buggedFields: any = Object.keys(fieldBugs);
+    const buggedFields: any = Object.keys(inputIssues);
 
     formInputs.forEach((input) => {
       const inputDiv = input.parentNode;
@@ -51,7 +90,7 @@ export default class FormView {
       }
 
       if (buggedFields.includes(field)) {
-        const bugMessage = fieldBugs[field];
+        const bugMessage = inputIssues[field as keyof Object];
         const formBugMessage = document.createElement("p");
         formBugMessage.className = "form-bug-message";
         formBugMessage.textContent = bugMessage;
@@ -64,6 +103,12 @@ export default class FormView {
   }
 
   _getInputs() {
-    return this.formElement.querySelectorAll("input");
+    return this.formElement.querySelectorAll(".form-element");
+  }
+
+  _getFormField(field: string) {
+    return <HTMLInputElement>(
+      this.formElement?.querySelector(`[data-field-name="${field}"]`)
+    );
   }
 }

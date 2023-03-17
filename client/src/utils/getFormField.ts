@@ -1,3 +1,3 @@
 export default (input: Element) => {
-  return input.className.split(" ")[0].replace("sign-", "");
+  return (input as HTMLElement).dataset.fieldName;
 };

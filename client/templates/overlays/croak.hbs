@@ -1,0 +1,31 @@
+{{#extend "overlayBase"}}
+  {{#content "content"}}
+    <div class="croak-overlay overlay">
+      <div class="croak-header">
+        <img
+          class="user-photo"
+          src="/img/{{currentUser.photo}}"
+          alt="{{currentUser.nickname}}"
+        />
+      </div>
+      <form class="croak-form">
+        <div class="input-div">
+          <textarea
+            class="form-element"
+            data-field-name="croakText"
+            type="text"
+            placeholder="What's going on?"
+          ></textarea>
+        </div>
+        <div class="croak-footer">
+          <div class="croak-counter">
+            <span class="current-length">0</span>
+            /
+            <span class="max-lenght">0</span>
+          </div>
+          <button class="croak-submit" type="submit">Croak</button>
+        </div>
+      </form>
+    </div>
+  {{/content}}
+{{/extend}}

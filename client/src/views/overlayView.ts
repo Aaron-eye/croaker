@@ -20,7 +20,7 @@ export default class overlayView implements IOverlayView {
     });
   }
 
-  close(options = { overlayReplace: true }) {
+  close(options = { overlayReplace: false }) {
     this.element?.remove();
     if (!options.overlayReplace) {
       overlayBlur.remove();
@@ -32,7 +32,7 @@ export default class overlayView implements IOverlayView {
 
   display() {
     if (window.currentOverlay) {
-      window.currentOverlay.close();
+      window.currentOverlay.close({ overlayReplace: true });
     } else {
       document.body.appendChild(overlayBlur);
       document.addEventListener("click", this._addOutsideClickListener);
@@ -48,13 +48,13 @@ export default class overlayView implements IOverlayView {
 
   _addOutsideClickListener = (event: Event) => {
     if (!(event.target as Element).closest(".overlay-base")) {
-      this.close({ overlayReplace: false });
+      this.close();
     }
   };
 
   _addCloseListener() {
     this.closeBtn?.addEventListener("click", (e) => {
-      this.close({ overlayReplace: false });
+      this.close();
     });
   }
 }

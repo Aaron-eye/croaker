@@ -14,6 +14,8 @@ import globalErrorHandler from "./controllers/errorController.js";
 import getLoggedUser from "./utils/getLoggedUser.js";
 import viewRouter from "./routes/viewRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import croakRouter from "./routes/croakRoutes.js";
+import configRouter from "./routes/configRoutes.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -77,6 +79,8 @@ app.use(
 app.use(getLoggedUser);
 app.use("/", viewRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/croaks", croakRouter);
+app.use("/api/v1/config", configRouter);
 
 /*app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

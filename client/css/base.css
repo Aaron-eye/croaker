@@ -87,7 +87,7 @@ button {
   transition: background-color 100ms linear;
 }
 
-.post {
+.croak-btn {
   padding: 1rem;
 
   font-weight: 700;
@@ -100,7 +100,7 @@ button {
   transition: background-color 100ms linear;
 }
 
-.post:hover {
+.croak-btn:hover {
   background-color: var(--primary-dark);
   transition: background-color 100ms linear;
 }

@@ -1,8 +1,17 @@
-import getTemplate from "../utils/getTemplate.js";
-import overlayView from "../views/overlayView";
-import { IFormController } from "./../types/form";
-import { IOverlayView } from "../types/overlays";
 import { IUserModel, IUserController } from "../types/user";
+import overlayControllerFactory from "./overlayControllerFactory";
+
+const setSignin = (signinRes: any) => {
+  const signinObj = {
+    signedIn: true,
+    signinExpirationDate: signinRes.data.signinExpirationDate,
+  };
+  localStorage.setItem("signin", JSON.stringify(signinObj));
+};
+
+const removeSignin = () => {
+  localStorage.removeItem("signin");
+};
 
 export default class UserController implements IUserController {
   model: IUserModel;
@@ -10,21 +19,39 @@ export default class UserController implements IUserController {
     this.model = model;
   }
 
+  async setData(keys: string[]) {
+    const stringedFields = keys.join(",");
+    await this.model.setData(stringedFields);
+    return;
+  }
+
+  getData() {
+    return this.model.getData();
+  }
+
+  async handleCroak(data: any) {
+    const croakRes = await this.model.croak(data);
+
+    if (croakRes.data.status === "success") {
+      window.setTimeout(() => {
+        window.location.replace(
+          `${window.location.origin}/${croakRes.data.userNickname}`
+        );
+      }, 1500);
+    }
+    return;
+  }
+
   async handleSignin(data: any) {
-    const signedIn = await getTemplate("overlays/signedIn");
-    let signedInContainer: IOverlayView | null = null;
-    if (signedIn) signedInContainer = new overlayView(signedIn);
+    const signedInContainer =
+      await overlayControllerFactory.createOverlayController("signedIn");
 
     const signinRes = await this.model.signin(data);
 
     if (signinRes.data.status === "success") {
       signedInContainer?.display();
 
-      const signinObj = {
-        signedIn: true,
-        signinExpirationDate: signinRes.data.signinExpirationDate,
-      };
-      localStorage.setItem("signin", JSON.stringify(signinObj));
+      setSignin(signinRes);
 
       window.setTimeout(() => {
         location.reload();
@@ -36,18 +63,21 @@ export default class UserController implements IUserController {
   async handleSignout() {
     const signoutRes = await this.model.signout();
     if (signoutRes.data.status == "success") {
+      removeSignin();
+
       location.reload();
     }
   }
 
   async handleSignup(data: any) {
-    const accountCreated = await getTemplate("overlays/accountCreated");
-    let accountCreatedContainer: object | null = null;
-    if (accountCreated)
-      accountCreatedContainer = new overlayView(accountCreated);
+    const sginedUpController =
+      await overlayControllerFactory.createOverlayController("accountCreated");
 
     const signupRes = await this.model.signup(data);
-    if (signupRes.data.status === "success") {
+    if (signupRes?.data?.status === "success") {
+      setSignin(signupRes);
+      sginedUpController?.display();
+
       window.setTimeout(() => {
         location.reload();
       }, 1500);

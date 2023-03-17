@@ -53,3 +53,7 @@ input:focus {
   border-radius: 100px;
   box-shadow: 0 2.8px 10px -2px black;
 }
+
+.limit-reached {
+  color: red;
+}

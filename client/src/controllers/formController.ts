@@ -11,6 +11,14 @@ export default class FormController {
     this.view.addSubmitListener(this.handleFormSubmit.bind(this));
   }
 
+  setFieldLimit(field: string, charLimit: number) {
+    this.view.setFieldLimit(field, charLimit);
+  }
+
+  setInputCounter(field: string, counter: string, maxLength: number) {
+    this.view.setInputCounter(field, counter, maxLength);
+  }
+
   async handleFormSubmit(event: Event) {
     event.preventDefault();
 
@@ -22,7 +30,13 @@ export default class FormController {
         this.view.formElement
       );
     } catch (err) {
-      this.view.displayInputBugs(err);
+      this.handleInputErrors(err);
     }
+  }
+
+  handleInputErrors(err: any) {
+    const inputIssues = err.response.data.validationIssues;
+    if (!inputIssues) return;
+    this.view.displayInputErrors(inputIssues);
   }
 }

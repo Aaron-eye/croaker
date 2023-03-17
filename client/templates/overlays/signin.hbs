@@ -3,12 +3,22 @@
     <form class="sign-form signin-form overlay">
       <h1>Sign In</h1>
       <div class="input-div">
-        <input class="sign-email" type="text" placeholder="Email" />
+        <input
+          class="form-element"
+          data-field-name="email"
+          type="text"
+          placeholder="Email"
+        />
       </div>
       <div class="input-div">
-        <input class="sign-password" type="text" placeholder="Password" />
+        <input
+          class="form-element"
+          data-field-name="password"
+          type="text"
+          placeholder="Password"
+        />
       </div>
-      <button class="sign-submit" type="submit">Login</button>
+      <button type="submit">Login</button>
     </form>
   {{/content}}
 {{/extend}}

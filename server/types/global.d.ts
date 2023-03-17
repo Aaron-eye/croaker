@@ -4,6 +4,7 @@ import { Request } from "express";
 declare global {
   namespace Express {
     interface Request {
+      fields?: any;
       user?: any;
       // Add your custom properties here
     }

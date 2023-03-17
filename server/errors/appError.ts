@@ -1,13 +1,16 @@
-//@ts-nocheck
-
 class AppError extends Error {
-  constructor(message: string, statusCode: number, specifications: any = null) {
+  statusCode: number;
+  status: string;
+  isOperational: boolean;
+  specifications: Object | null;
+
+  constructor(message: string, statusCode: number) {
     super(message);
 
     this.statusCode = statusCode;
     this.status = `${statusCode}`.startsWith("4") ? "fail" : "error";
     this.isOperational = true;
-    this.specifications = specifications;
+    this.specifications = null;
 
     Error.captureStackTrace(this, this.constructor);
   }

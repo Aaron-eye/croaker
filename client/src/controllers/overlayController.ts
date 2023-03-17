@@ -15,7 +15,11 @@ export default class OverlayController implements IOverlayController {
     this.view.addOpenTrigger(openingBtn);
   }
 
-  close() {
-    this.view.close();
+  close(options = { overlayReplace: false }) {
+    this.view.close(options);
+  }
+
+  display() {
+    this.view.display();
   }
 }

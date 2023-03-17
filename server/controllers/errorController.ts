@@ -1,4 +1,6 @@
-import AppError from "./../utils/appError.js";
+// @ts-nocheck
+import AppError from "../errors/appError.js";
+import ValidationError from "../errors/validationError.js";
 import { ErrorRequestHandler, Request, Response } from "express";
 import mongoose from "mongoose";
 
@@ -8,7 +10,6 @@ const handleCastErrorDB = (err: any) => {
 };
 
 const handleDuplicateFieldsDB = (err: any) => {
-  console.log(err);
   const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
 
   const message = `Duplicate field value: ${value}. Please use another value!`;
@@ -19,13 +20,15 @@ const handleValidationErrorDB = (err: any) => {
   const errors = Object.values(err.errors);
   const errorsMessages = errors.map((el: any) => el.message);
 
-  const message = `Invalid input data. ${errorsMessages.join(". ")}`;
-  const errorsObj: any = {};
+  //const message = `Invalid input data. ${errorsMessages.join(". ")}`;
+  const message = `Invalid input data.`;
+  const validationIssues: any = {};
   errors.forEach((err: any) => {
-    errorsObj[err.path] = err.message;
+    validationIssues[err.path] = err.message;
   });
 
-  return new AppError(message, 400, errorsObj);
+  // return new AppError(message, 400, validationIssues);
+  return new ValidationError(message, 400, validationIssues);
 };
 
 const handleJWTError = () =>
@@ -68,11 +71,13 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (error.name === "JsonWebTokenError") error = handleJWTError();
   if (error.name === "TokenExpiredError") error = handleJWTExpiredError();
 
-  return res.status(error.statusCode).json({
+  const defaultErrorRes = {
     status: error.status,
     message: error.message,
-    specifications: error.specifications,
-  });
+  };
+  return res
+    .status(error.statusCode)
+    .json({ ...defaultErrorRes, ...error.specifications });
 };
 
 export default globalErrorHandler;

@@ -1,0 +1,25 @@
+.signout-confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-width: 16rem;
+}
+
+.signout-confirm .choice-buttons {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.signout-confirm .choice-buttons button {
+  width: 8rem;
+}
+
+.signout-confirm .choice-buttons .no-btn {
+  color: var(--dark-text);
+  background-color: var(--light-green);
+}
+
+.signout-confirm .choice-buttons .no-btn:hover {
+  background-color: var(--gray);
+}

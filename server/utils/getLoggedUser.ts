@@ -1,6 +1,6 @@
 import User from "./../models/userModel.js";
 import { Request, Response, NextFunction } from "express";
-import AppError from "./../utils/appError.js";
+import AppError from "../errors/appError.js";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
@@ -23,12 +23,12 @@ const getLoggedUser = async (req: Request) => {
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-  if (!token) return null;
+  if (!token || token == "loggedout") return null;
 
   const decoded = jwt.verify(token, JWT_SECRET) as DecodedJwt;
   const userQuery = User.findById(decoded.id);
   if (!userQuery) return null;
-  userQuery.select("-_id -__v");
+  userQuery.select("-__v");
   const currentUser = await userQuery;
 
   if (currentUser.changedPasswordAfter(decoded.iat)) return null;

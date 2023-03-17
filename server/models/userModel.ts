@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import uniqueValidator from "mongoose-unique-validator";
+import filterSensiviteFields from "../utils/filterSensiviteFields.js";
 
 const userSchema = new mongoose.Schema({
   nickname: {
@@ -37,13 +38,14 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please provide a password"],
     minlength: [8, "Your password should have more than 8 characters"],
     select: false,
+    sensivite: true,
   },
   passwordConfirm: {
     type: String,
     required: [true, "Please confirm your password"],
     validate: {
       // This only works on CREATE and SAVE!!!
-      validator: function(el: string) {
+      validator: function (el: string) {
         return el === this.password;
       },
       message: "Passwords are not the same",
@@ -77,11 +79,15 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+userSchema.add({
+  sensivite: { type: Boolean, default: false },
+});
+
 userSchema.plugin(uniqueValidator, {
   message: "This {PATH} is already being used",
 });
 
-userSchema.pre("save", async function(next: Function) {
+userSchema.pre("save", async function (next: Function) {
   if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 12);
@@ -90,31 +96,30 @@ userSchema.pre("save", async function(next: Function) {
   next();
 });
 
-userSchema.pre("save", function(next: Function) {
+userSchema.pre("save", function (next: Function) {
   if (!this.isModified("password") || this.isNew) return next();
 
   this.passwordChangedAt = Date.now() - 1000;
   next();
 });
 
-userSchema.pre(/^find/, function(next: Function) {
+userSchema.pre(/^find/, function (next: Function) {
   // this points to the current query
   this.find({ active: { $ne: false } });
   next();
 });
 
-userSchema.methods.correctPassword = async function(
+userSchema.methods.correctPassword = async function (
   candidatePassword: string,
   userPassword: string
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-userSchema.methods.changedPasswordAfter = function(JWTTimestamp: any) {
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp: any) {
   if (this.passwordChangedAt) {
     const changedTimestamp =
-      this.passwordChangedAt.getTime() /
-      1000; /*parseInt(
+      this.passwordChangedAt.getTime() / 1000; /*parseInt(
       this.passwordChangedAt.getTime() / 1000,
       10
     );*/
@@ -126,7 +131,7 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp: any) {
   return false;
 };
 
-userSchema.methods.createPasswordResetToken = function() {
+userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString("hex");
 
   this.passwordResetToken = crypto

@@ -3,17 +3,33 @@
     <form class="sign-form signup-form overlay">
       <h1>Sign Up</h1>
       <div class="input-div">
-        <input class="sign-nickname" type="text" placeholder="Nickname" />
-      </div>
-      <div class="input-div">
-        <input class="sign-email" type="text" placeholder="Email" />
-      </div>
-      <div class="input-div">
-        <input class="sign-password" type="text" placeholder="Password" />
+        <input
+          class="form-element"
+          data-field-name="nickname"
+          type="text"
+          placeholder="Nickname"
+        />
       </div>
       <div class="input-div">
         <input
-          class="sign-passwordConfirm"
+          class="form-element"
+          data-field-name="email"
+          type="text"
+          placeholder="Email"
+        />
+      </div>
+      <div class="input-div">
+        <input
+          class="form-element"
+          data-field-name="password"
+          type="text"
+          placeholder="Password"
+        />
+      </div>
+      <div class="input-div">
+        <input
+          class="form-element"
+          data-field-name="passwordConfirm"
           type="text"
           placeholder="Confirm Password"
         />

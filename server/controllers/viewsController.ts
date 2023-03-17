@@ -1,9 +1,6 @@
-import { RequestHandler } from "express";
-import crypto from "crypto";
-import getLoggedUser from "./../utils/getLoggedUser.js";
 import catchAsync from "./../utils/catchAsync.js";
 import User from "./../models/userModel.js";
-import AppError from "./../utils/appError.js";
+import AppError from "../errors/appError.js";
 
 const existingPages = new Set(["feed"]);
 const existingUserPages = new Set(["userCroaks"]);

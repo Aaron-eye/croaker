@@ -1,6 +1,7 @@
 //@ts-nocheck
-
 import mongoose from "mongoose";
+import config from "./../config/global-config.json" assert { type: "json" };
+const { croakMaximumLength } = config;
 
 const croakSchema = new mongoose.Schema({
   author: {
@@ -10,12 +11,15 @@ const croakSchema = new mongoose.Schema({
   text: {
     type: String,
     required: [true, "Please write something"],
-    maxlength: [1000, "Please write something with less than 1000 characters"],
+    maxlength: [
+      croakMaximumLength,
+      `Please write something with less than ${croakMaximumLength} characters`,
+    ],
   },
   postedAt: Date,
 });
 
-croakSchema.pre("save", function(next: Function) {
+croakSchema.pre("save", function (next: Function) {
   this.postedAt = Date.now() - 1000;
   next();
 });

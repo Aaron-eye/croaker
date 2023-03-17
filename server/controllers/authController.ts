@@ -1,11 +1,10 @@
-import AppError from "./../utils/appError.js";
+import ValidationError from "../errors/validationError.js";
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
 import User from "./../models/userModel.js";
 import { Request, RequestHandler, Response, NextFunction } from "express";
 import catchAsync from "./../utils/catchAsync.js";
 import dotenv from "dotenv";
-import getLoggedUser from "./../utils/getLoggedUser.js";
 //import Email from "./../utils/email";
 
 dotenv.config({ path: "config.env" });
@@ -51,23 +50,25 @@ const createSendToken = (
 
 export const signin = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  const errorSpecifications: any = {};
+  const validationIssues: any = {};
 
-  if (!email) errorSpecifications.email = "Please provide an email";
-  if (!password) errorSpecifications.password = "Please provide a password";
+  if (!email) validationIssues.email = "Please provide an email";
+  if (!password) validationIssues.password = "Please provide a password";
 
   const user = await User.findOne({ email }).select("+password");
-  if (email && !user) errorSpecifications.email = "This email doesn't exist";
+  if (email && !user) validationIssues.email = "This email doesn't exist";
   if (
     user &&
     password &&
     !(await user.correctPassword(password, user.password))
   ) {
-    errorSpecifications.password = "Incorrect password";
+    validationIssues.password = "Incorrect password";
   }
 
-  if (Object.keys(errorSpecifications).length !== 0)
-    return next(new AppError("Invalid credentials", 401, errorSpecifications));
+  if (Object.keys(validationIssues).length !== 0)
+    return next(
+      new ValidationError("Invalid credentials", 401, validationIssues)
+    );
   createSendToken(user, 200, req, res);
 });
 
@@ -91,22 +92,4 @@ export const signup = catchAsync(async (req, res, next) => {
   //await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 201, req, res);
-});
-
-export const checkAuth = catchAsync(async (req, res, next) => {
-  if (req.user) next();
-  else next(new AppError("User not logged in!", 401));
-
-  /*return catchAsync(async (req, res, next) => {
-    let currentUser;
-    try {
-      currentUser = await getLoggedUser(req, next);
-    } catch (err) {
-      return next(err);
-    }
-
-    req.user = currentUser;
-    res.locals.user = currentUser;
-    next();
-  });*/
 });

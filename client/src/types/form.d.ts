@@ -3,12 +3,14 @@ export interface IFormModel extends Object {
 }
 
 export interface IFormController extends Object {
-  displayInputBugs: Function;
+  displayInputErrors: Function;
 }
 
 export interface IFormView extends Object {
   getFormData: Function;
   addSubmitListener: Function;
   formElement: Element;
-  displayInputBugs: Function;
+  displayInputErrors: Function;
+  setFieldLimit: Function;
+  setInputCounter: Function;
 }
