@@ -1,44 +1,75 @@
-const loader = document.createElement("div");
-loader.className = "spinning-loader";
-
-let addLoaderTimeout: any;
-
 const getChildren = (div: Element) => {
   return Array.from(div.children).map((element) => element as HTMLElement);
 };
 
-const addLoader = (div: Element) => {
-  addLoaderTimeout = setTimeout(() => {
-    getChildren(div).forEach(
-      (element) => (element.style.visibility = "hidden")
-    );
+class Loader {
+  element: Element;
+  loadingDiv: Element;
+  addLoaderTimeout: any;
+  previousDivPosition: string | null = null;
 
-    (div as HTMLElement).style.position = "relative";
-    div?.appendChild(loader);
-  }, 250);
-};
+  constructor(loadingDiv: Element, styles: any = {}) {
+    this.loadingDiv = loadingDiv;
 
-const removeLoader = (div: Element) => {
-  if (addLoaderTimeout) {
-    clearTimeout(addLoaderTimeout);
-    addLoaderTimeout = undefined;
+    const element = document.createElement("div");
+    element.className = "spinning-loader";
+    Object.keys(styles).forEach((property) => {
+      const propertyKey = property as keyof Object;
+      element.style[propertyKey] = styles[propertyKey];
+    });
+    this.element = element;
   }
 
-  getChildren(div).forEach((element) => (element.style.visibility = "visible"));
+  render() {
+    this.addLoaderTimeout = setTimeout(() => {
+      getChildren(this.loadingDiv).forEach(
+        (element) => (element.style.visibility = "hidden")
+      );
 
-  (div as HTMLElement).style.position = "static";
-  if (div.querySelector(":scope > .spinning-loader")) div?.removeChild(loader);
-};
+      const previousDivPosition = window
+        .getComputedStyle(this.loadingDiv)
+        .getPropertyValue("position");
 
-export default async (loadingFunction: Function, div: Element) => {
-  addLoader(div);
+      this.previousDivPosition = previousDivPosition;
+      (this.loadingDiv as HTMLElement).style.position = "relative";
+      this.loadingDiv?.appendChild(this.element);
+    }, 250);
+  }
+
+  remove() {
+    if (this.addLoaderTimeout) {
+      clearTimeout(this.addLoaderTimeout);
+      this.addLoaderTimeout = undefined;
+    }
+
+    getChildren(this.loadingDiv).forEach(
+      (element) => (element.style.visibility = "visible")
+    );
+
+    if (this.previousDivPosition) {
+      (this.loadingDiv as HTMLElement).style.position =
+        this.previousDivPosition;
+    }
+    if (this.loadingDiv.querySelector(".spinning-loader")) {
+      this.loadingDiv?.removeChild(this.element);
+    }
+  }
+}
+
+export default async (
+  loadingFunction: Function,
+  div: Element,
+  loaderStyles: Object = {}
+) => {
+  const loader = new Loader(div, loaderStyles);
+  loader.render();
 
   try {
     const loadingFunctionReturn = await loadingFunction();
-    removeLoader(div);
+    loader.remove();
     return loadingFunctionReturn;
   } catch (err) {
-    removeLoader(div);
+    loader.remove();
     throw err;
   }
 };

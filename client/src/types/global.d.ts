@@ -9,8 +9,6 @@ declare global {
   interface Window {
     currentOverlay: IOverlayView | null;
     overlays: Object;
-    isSignedIn: boolean;
-    userController: IUserController;
     textAreaAdjust: Function;
     globalConfig: IGlobalConfig;
   }

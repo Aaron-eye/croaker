@@ -15,8 +15,8 @@ export default class FormController {
     this.view.setFieldLimit(field, charLimit);
   }
 
-  setInputCounter(field: string, counter: string, maxLength: number) {
-    this.view.setInputCounter(field, counter, maxLength);
+  limitInputLength(field: string, counter: string, maxLength: number) {
+    this.view.limitInputLength(field, counter, maxLength);
   }
 
   async handleFormSubmit(event: Event) {
@@ -25,18 +25,23 @@ export default class FormController {
     const formData = this.view.getFormData();
 
     try {
+      this.view.disableSubmit();
       await loadData(
         () => this.submitFunction(formData),
         this.view.formElement
       );
     } catch (err) {
-      this.handleInputErrors(err);
+      this.view.enableSubmit();
+      this.handleError(err);
     }
   }
 
-  handleInputErrors(err: any) {
+  handleError(err: any) {
+    console.log(err);
     const inputIssues = err.response.data.validationIssues;
-    if (!inputIssues) return;
-    this.view.displayInputErrors(inputIssues);
+    if (inputIssues) this.view.displayInputErrors(inputIssues);
+    else {
+      this.view.displayGenericError(err);
+    }
   }
 }

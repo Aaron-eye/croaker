@@ -10,5 +10,6 @@ router.post("/signin", authController.signin);
 router.get("/signout", authController.signout);
 
 router.get("/me/:fields?", userController.getMe, userController.getUser);
+router.get("");
 
 export default router;

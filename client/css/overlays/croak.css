@@ -15,11 +15,8 @@
   width: 100%;
 }
 
-.croak-form * {
-  width: 100%;
-}
-
 .croak-form .form-element {
+  width: 100%;
   border: 0;
   font-size: 1.2rem;
 
@@ -28,7 +25,7 @@
 }
 
 .croak-footer {
-  width: 16rem;
+  width: 40%;
   margin-left: auto;
 
   display: flex;
@@ -53,6 +50,6 @@
 }
 
 .croak-overlay .croak-submit {
-  padding: 0;
   margin: 0;
+  flex: 1 0 auto;
 }

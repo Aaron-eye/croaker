@@ -1,4 +1,5 @@
 import overlayControllerFactory from "./controllers/overlayControllerFactory";
+import getUser from "./utils/getUser";
 
 window.currentOverlay = null;
 
@@ -12,14 +13,12 @@ export default async () => {
 
   const { croakMaximumLength } = window.globalConfig;
 
-  console.log(window.isSignedIn);
+  const userController = getUser();
+  const signedIn = userController.checkSignedIn();
 
-  const userController = window.userController;
-
-  if (window.isSignedIn) {
+  if (signedIn) {
     await userController.setData(["nickname", "photo", "password"]);
-    const basicUserData = userController.getData();
-    console.log(basicUserData);
+    const user = userController.getData();
 
     const {
       overlayController: croakOverlayController,
@@ -27,11 +26,11 @@ export default async () => {
     } = await overlayControllerFactory.createFormOverlayController(
       "croak",
       userController.handleCroak.bind(userController),
-      { currentUser: basicUserData }
+      { currentUser: user }
     );
 
     croakFormController.setFieldLimit("croakText", croakMaximumLength);
-    croakFormController.setInputCounter(
+    croakFormController.limitInputLength(
       "croakText",
       "croak-counter",
       croakMaximumLength

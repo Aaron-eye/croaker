@@ -1,0 +1,74 @@
+@import url("../variables.css");
+
+.croak-preview {
+  background-color: white;
+  padding: 1.5rem;
+}
+
+.croak-preview .croak-header {
+  padding: 0;
+  width: 100%;
+
+  display: flex;
+  gap: space-between;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.croak-preview .photo-and-nick {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.croak-preview .user-photo {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+.croak-preview .user-name {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.croak-preview .croak-text {
+  margin-bottom: 2rem;
+}
+
+.croak-preview .croak-footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.croak-preview .engagements {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 2rem;
+}
+
+.croak-preview .engagements > * {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.croak-preview .engagements svg {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100px;
+
+  color: var(--dark-text);
+}
+
+.croak-preview .engagements svg:hover {
+  background-color: var(--light-green);
+}
+
+.engagement-number {
+  font-size: 1rem;
+  font-weight: 500;
+}

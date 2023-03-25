@@ -150,11 +150,15 @@ button {
 .content-container {
   background-color: var(--light-green);
 
-  overflow-y: auto;
+  overflow: auto;
   white-space: nowrap;
 
   padding-left: 2rem;
   padding-right: 2rem;
+}
+
+.content-container::-webkit-scrollbar {
+  display: none;
 }
 
 .content-header {

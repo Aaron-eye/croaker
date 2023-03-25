@@ -5,6 +5,7 @@ export interface IUserModel extends Object {
   croak: Function;
   setData: Function;
   getData: Function;
+  signedIn: boolean;
 }
 
 export interface IUserController extends Object {

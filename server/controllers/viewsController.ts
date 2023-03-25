@@ -31,9 +31,10 @@ export const getUserPage = catchAsync(async (req, res, next) => {
   userQuery.select("-_id -__v");
   const user = await userQuery;
 
-  const page = req.params.userPage || "userCroaks";
-  if (!existingUserPages.has(page))
+  const userPage = req.params.userPage || "userCroaks";
+  if (!existingUserPages.has(userPage))
     return next(new AppError("User page not found", 404));
 
-  res.status(200).render(page, { user, currentUser });
+  const template = `user-pages/${userPage}`;
+  res.status(200).render(template, { user, currentUser });
 });

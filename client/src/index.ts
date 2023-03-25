@@ -1,17 +1,14 @@
-import handlebarsManager from "./handlebarsManager";
-import overlayManager from "./overlayManager.js";
+import handlebarsInit from "./handlebarsInit";
+import baseComponents from "./baseComponents.js";
 
-import isSignedIn from "./isSignedIn";
-import getUser from "./getUser";
-import getGlobalConfig from "./getGlobalConfig";
-
-window.isSignedIn = isSignedIn();
+import getGlobalConfig from "./utils/getGlobalConfig";
+import userCroaks from "./userCroaks";
 
 (async () => {
   window.globalConfig = await getGlobalConfig();
-  window.userController = getUser();
 
-  await handlebarsManager();
-  await overlayManager();
+  await handlebarsInit();
+  await baseComponents();
+  await userCroaks();
   // profileController();
 })();

@@ -15,7 +15,20 @@ const croakSchema = new mongoose.Schema({
       croakMaximumLength,
       `Please write something with less than ${croakMaximumLength} characters`,
     ],
+    minLength: [1, `Please write something`],
   },
+  likes: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
+  ],
+  /*comments: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Croak",
+    },
+  ],*/
   postedAt: Date,
 });
 

@@ -1,9 +1,16 @@
+import createErrorElement from "../utils/createErrorElement";
 import getFormField from "../utils/getFormField";
 
 export default class FormView {
   formElement: Element;
+  submitBtn: HTMLButtonElement;
   constructor(formElement: Element) {
     this.formElement = formElement;
+    const submitBtn = formElement.querySelector(
+      "button[type=submit]"
+    ) as HTMLButtonElement;
+    if (!submitBtn) throw new Error(`No submit button in the form!`);
+    this.submitBtn = submitBtn;
   }
 
   setFieldLimit(field: string, charLimit: number) {
@@ -14,7 +21,7 @@ export default class FormView {
     formField.maxLength = charLimit;
   }
 
-  setInputCounter(field: string, counter: string, maxLength: number) {
+  limitInputLength(field: string, counter: string, maxLength: number) {
     const counterElement = this.formElement.querySelector(`.${counter}`);
     if (!counterElement)
       throw new Error(`The "${counter}" counter doesn't exist!`);
@@ -36,14 +43,28 @@ export default class FormView {
 
     maxLengthElement.textContent = String(maxLength);
 
-    formField.addEventListener("input", () => {
+    const checkInputLength = () => {
       const currentLength = formField.value.length;
       currentLengthElement.textContent = String(currentLength);
 
-      if (currentLength >= maxLength)
-        counterElement.classList.add("limit-reached");
-      else counterElement.classList.remove("limit-reached");
-    });
+      if (currentLength == 0 || currentLength >= maxLength) {
+        counterElement.classList.add("invalid-length");
+        this.disableSubmit();
+      } else {
+        counterElement.classList.remove("invalid-length");
+        this.enableSubmit();
+      }
+    };
+    checkInputLength();
+    formField.addEventListener("input", checkInputLength);
+  }
+
+  disableSubmit() {
+    this.submitBtn.disabled = true;
+  }
+
+  enableSubmit() {
+    this.submitBtn.disabled = false;
   }
 
   addSubmitListener(submitHandler: EventListener) {
@@ -69,7 +90,11 @@ export default class FormView {
     });
   }
 
-  displaySuccessMessage() {}
+  async displayGenericError(err: any) {
+    const errorElement = await createErrorElement(err);
+    this.formElement.insertAdjacentElement("afterbegin", errorElement);
+    return;
+  }
 
   displayInputErrors(inputIssues: any) {
     const formInputs = this._getInputs();

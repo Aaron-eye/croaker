@@ -20,9 +20,12 @@ export default class UserController implements IUserController {
   }
 
   async setData(keys: string[]) {
-    const stringedFields = keys.join(",");
-    await this.model.setData(stringedFields);
+    await this.model.setData(keys);
     return;
+  }
+
+  checkSignedIn() {
+    return this.model.signedIn;
   }
 
   getData() {
@@ -35,9 +38,9 @@ export default class UserController implements IUserController {
     if (croakRes.data.status === "success") {
       window.setTimeout(() => {
         window.location.replace(
-          `${window.location.origin}/${croakRes.data.userNickname}`
+          `${window.location.origin}/user/${croakRes.data.data.userNickname}`
         );
-      }, 1500);
+      }, 0);
     }
     return;
   }

@@ -3,13 +3,36 @@ import { IUserModel } from "../types/user";
 
 export default class UserModel implements IUserModel {
   userData = {};
+  signedIn: boolean;
 
-  async setData(fields: string) {
+  constructor() {
+    const signinJSON = localStorage.getItem("signin");
+    if (!signinJSON) {
+      this.signedIn = false;
+      return;
+    }
+    const signinObj = JSON.parse(signinJSON);
+    if (new Date() > signinObj.signinExpirationDate) {
+      this.signedIn = false;
+      return;
+    }
+
+    this.signedIn = true;
+  }
+
+  async setData(fields: string[]) {
+    let unknownFields: string[] = [];
+    fields.forEach((field) => {
+      if (!this.userData[field as keyof Object]) unknownFields.push(field);
+    });
+
+    const stringedFields = unknownFields.join(",");
     const userReference = "me";
     const res = await axios({
       method: "GET",
-      url: `/api/v1/users/${userReference}/${fields}`,
+      url: `/api/v1/users/${userReference}/${stringedFields}`,
     });
+
     const newData = res.data.data;
     for (const property in newData) {
       const dataKey = property as keyof Object;

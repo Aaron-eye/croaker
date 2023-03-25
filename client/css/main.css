@@ -54,6 +54,47 @@ input:focus {
   box-shadow: 0 2.8px 10px -2px black;
 }
 
-.limit-reached {
-  color: red;
+.invalid-length {
+  color: crimson;
+}
+
+/*button:disabled {
+  opacity: 0.5;
+}
+
+button:disabled:hover {
+  cursor: not-allowed;
+  transition: unset;
+}*/
+
+button:disabled {
+  opacity: 0.5;
+}
+
+button:disabled:hover {
+  cursor: not-allowed;
+}
+
+.error-message {
+  margin: 0 0 2rem 0;
+
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.error-message svg {
+  color: crimson;
+  width: 2rem;
+  height: 2rem;
+}
+
+.error-message span {
+  color: crimson;
+}
+
+.content-block {
+  background-color: white;
+  border-radius: 10px;
+  border: 1px var(--light-gray) solid;
 }

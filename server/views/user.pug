@@ -4,24 +4,25 @@ block styles
     link(rel='stylesheet' href='/css/user.css')
 
 block content
-    .account-details
-        .photo-and-nick
-            img.user-photo(src=`/img/${user.photo}` alt=`${user.nickname}`)
-            h1.user-name= `${user.nickname}`
-        p.bio= `${user.bio}`
+    .user(data-user-name=`${user.nickname}`)
+        .account-details.content-block
+            .photo-and-nick
+                img.user-photo(src=`/img/${user.photo}` alt=`${user.nickname}`)
+                h1.user-name= `${user.nickname}`
+            p.bio= `${user.bio}`
 
-        .related-people
-            a.following
-                span.following-amount= `${user.following.length}`
-                span Following
-            a.followers
-                span.followers-amount= `${user.followers.length}`
-                span Followers
-    
-    .user-content-container
-        ul.account-nav
-            li
-                button Croaks
+            .related-people
+                a.following
+                    span.following-amount= `${user.following.length}`
+                    span Following
+                a.followers
+                    span.followers-amount= `${user.followers.length}`
+                    span Followers
+        
+        .user-content-container
+            ul.account-nav
+                li
+                    button Croaks
 
-        .user-content
-            block userContent
+            .user-content
+                block userContent

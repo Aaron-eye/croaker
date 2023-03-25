@@ -12,5 +12,8 @@ export interface IFormView extends Object {
   formElement: Element;
   displayInputErrors: Function;
   setFieldLimit: Function;
-  setInputCounter: Function;
+  limitInputLength: Function;
+  disableSubmit: Function;
+  enableSubmit: Function;
+  displayGenericError: Function;
 }
