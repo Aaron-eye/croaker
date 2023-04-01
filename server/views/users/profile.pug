@@ -22,7 +22,9 @@ block content
                                 span.followers-amount= `${user.followers.length}`
                                 span Followers
                     .profile-interactions
-                        if (!isCurrentUser)
+                        if (isCurrentUser)
+                            span ( You )
+                        else
                             button.follow #{isFollowedByCurrentUser ? 'Unfollow' : 'Follow'}
             
             .user-content-container

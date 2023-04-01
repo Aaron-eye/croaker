@@ -28,12 +28,19 @@ export const getPage = catchAsync(async (req, res, next) => {
 
 export const getUserPage = catchAsync(async (req, res, next) => {
   const currentUser = req.user;
+  console.log(currentUser);
   const userQuery = User.aggregate([
     { $match: { nickname: req.params.nickname } },
     {
       $addFields: {
         isFollowedByCurrentUser: {
-          $in: [currentUser._id, "$followers"],
+          $cond: {
+            if: { $eq: [currentUser, null] },
+            then: false,
+            else: {
+              $in: [currentUser?._id, "$followers"],
+            },
+          },
         },
       },
     },
@@ -45,7 +52,7 @@ export const getUserPage = catchAsync(async (req, res, next) => {
     renderDefault(res, { currentUser });
     return;
   }
-  const isCurrentUser = currentUser._id.equals(user._id);
+  const isCurrentUser = currentUser ? currentUser._id.equals(user._id) : false;
   const { isFollowedByCurrentUser } = user;
 
   let userPage = req.params.userPage || "userCroaks";

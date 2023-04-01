@@ -86,13 +86,16 @@ export const getSearchUsers = catchAsync(async (req, res, next) => {
 });
 
 export const followUser = catchAsync(async (req, res, next) => {
-  const user = await User.updateOne(
+  const user = await User.findOneAndUpdate(
     { nickname: req.params.nickname },
     {
       $addToSet: { followers: req.user._id },
     },
     { new: true }
   );
+  await User.findByIdAndUpdate(req.user._id, {
+    $addToSet: { following: user._id },
+  });
 
   res.status(201).json({
     status: "success",
@@ -100,13 +103,16 @@ export const followUser = catchAsync(async (req, res, next) => {
 });
 
 export const unfollowUser = catchAsync(async (req, res, next) => {
-  const user = await User.updateOne(
+  const user = await User.findOneAndUpdate(
     { nickname: req.params.nickname },
     {
       $pull: { followers: req.user._id },
     },
     { new: true }
   );
+  await User.findByIdAndUpdate(req.user._id, {
+    $pull: { following: user._id },
+  });
 
   res.status(201).json({
     status: "success",

@@ -53,9 +53,9 @@ app.use((req, res, next) => {
 });
 
 // Development logging
-/*if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
-}*/
+}
 
 // Limit requests from same API
 const limiter = rateLimit({
@@ -66,7 +66,7 @@ const limiter = rateLimit({
 //app.use("/api", limiter);
 
 // Data Sanitization
-//app.use(xss());
+app.use(xss());
 
 // Prevent parameter pollution
 app.use(
