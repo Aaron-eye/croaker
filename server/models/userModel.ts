@@ -72,12 +72,25 @@ const userSchema = new mongoose.Schema({
       ref: "Croak",
     },
   ],
+  likedCroaks: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Croak",
+    },
+  ],
   active: {
     type: Boolean,
     default: true,
     select: false,
   },
 });
+
+userSchema.index({ nickname: 1 });
+userSchema.index({ email: 1 });
+userSchema.index({ following: 1 });
+userSchema.index({ followers: 1 });
+userSchema.index({ croaks: 1 });
+userSchema.index({ likedCroaks: 1 });
 
 userSchema.add({
   sensivite: { type: Boolean, default: false },

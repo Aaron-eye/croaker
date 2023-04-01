@@ -1,0 +1,17 @@
+extends ../base
+include searchContainer
+
+block styles
+    link(rel='stylesheet' href='/css/search/search.css')
+
+block content
+    .search-header
+        +searchContainer('main-search content-block', searchTarget, keyword)
+
+        ul.search-nav.page-nav
+            li
+                a(href=`/search/users/${keyword}`) People
+            li
+                a(href=`/search/croaks/${keyword}`) Croaks
+            
+    block searchPage

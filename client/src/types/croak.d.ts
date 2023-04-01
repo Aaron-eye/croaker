@@ -1,13 +1,9 @@
-export interface ICroakModel extends Object {
-  likedByCurrentUser: Boolean;
-  amountOfLikes: number;
-}
+export interface ICroakModel extends Object {}
 
 export interface ICroakView extends Object {
   render: Function;
+  element: Element;
   checkLike: Function;
-  currentUserEngage: Function;
-  updateEngagement: Function;
   getEngagementElement: Function;
   engagementContainer: Element;
 }

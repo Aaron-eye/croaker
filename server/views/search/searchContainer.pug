@@ -1,0 +1,5 @@
+mixin searchContainer(additionalClasses, searchTarget, defaultValue = "")
+    form(class=`search-container ${additionalClasses}` data-search-target=`${searchTarget}`)
+          svg.icon
+            use(xlink:href='/img/svgs/icons.svg#magnifying-glass')
+          input.search.form-element(type='text' placeholder='Search' data-field-name="keyword", value = defaultValue)

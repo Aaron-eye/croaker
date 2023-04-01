@@ -1,0 +1,47 @@
+.search-container {
+  height: 3rem;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+
+  display: flex;
+  gap: 0.75rem;
+}
+
+.search-container svg {
+  width: 1.2rem;
+  width: 1.2rem;
+
+  color: var(--dark-text-2);
+}
+
+.search-container .search {
+  flex: 1 0 auto;
+  border: none;
+  background-color: transparent;
+}
+
+.search-container .search::placeholder {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--light-text);
+}
+
+.secondary-search {
+  background-color: var(--light-green);
+}
+
+.main-search {
+  background-color: white;
+}
+
+.search-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  position: sticky;
+}
+
+.search-header > * {
+  margin: 0;
+}

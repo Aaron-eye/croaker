@@ -29,11 +29,16 @@ const croakSchema = new mongoose.Schema({
       ref: "Croak",
     },
   ],*/
-  postedAt: Date,
+  postedAt: { type: Date },
 });
 
+croakSchema.index({ author: 1 });
+croakSchema.index({ text: 1 });
+croakSchema.index({ likes: 1 });
+croakSchema.index({ postedAt: -1 });
+
 croakSchema.pre("save", function (next: Function) {
-  this.postedAt = Date.now() - 1000;
+  if (this.isNew) this.postedAt = Date.now() - 1000;
   next();
 });
 

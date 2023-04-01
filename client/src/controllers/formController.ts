@@ -1,7 +1,7 @@
 import loadData from "./../utils/loadData";
-import { IFormView } from "./../types/form";
+import { IFormView, IFormController } from "./../types/form";
 
-export default class FormController {
+export default class FormController implements IFormController {
   view: IFormView;
   submitFunction: Function;
   constructor(view: IFormView, submitFunction: Function) {

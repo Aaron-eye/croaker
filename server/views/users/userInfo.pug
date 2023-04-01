@@ -1,0 +1,4 @@
+mixin userInfo(photo, nickname)
+    .user-info
+        img.user-photo(src=`/img/${photo}` alt=`${nickname}`)
+        h2.user-nickname= `${nickname}`

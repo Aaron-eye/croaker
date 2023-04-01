@@ -1,15 +1,14 @@
-import createErrorElement from "../utils/createErrorElement";
+import createErrorElement from "../utils/errors/createErrorElement";
 import getFormField from "../utils/getFormField";
 
 export default class FormView {
   formElement: Element;
-  submitBtn: HTMLButtonElement;
+  submitBtn: HTMLButtonElement | null;
   constructor(formElement: Element) {
     this.formElement = formElement;
     const submitBtn = formElement.querySelector(
       "button[type=submit]"
     ) as HTMLButtonElement;
-    if (!submitBtn) throw new Error(`No submit button in the form!`);
     this.submitBtn = submitBtn;
   }
 
@@ -60,11 +59,11 @@ export default class FormView {
   }
 
   disableSubmit() {
-    this.submitBtn.disabled = true;
+    if (this.submitBtn) this.submitBtn.disabled = true;
   }
 
   enableSubmit() {
-    this.submitBtn.disabled = false;
+    if (this.submitBtn) this.submitBtn.disabled = false;
   }
 
   addSubmitListener(submitHandler: EventListener) {

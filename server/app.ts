@@ -3,10 +3,10 @@ import { fileURLToPath } from "url";
 
 import express from "express";
 import cookieParser from "cookie-parser";
-//import morgan from "morgan";
+import morgan from "morgan";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
-//import xss from "xss-clean";
+import xss from "xss-clean";
 import hpp from "hpp";
 import crypto from "crypto";
 

@@ -1,0 +1,39 @@
+extends ../base
+
+block styles
+    link(rel='stylesheet' href='/css/user/profile.css')
+
+block content
+    if user
+        .profile
+            .profile-information.content-block
+                .photo-and-nick
+                    img.user-photo(src=`/img/${user.photo}` alt=`${user.nickname}`)
+                    h1.user-nickname= `${user.nickname}`
+                    
+                .profile-details(data-is-followed-by-current-user=`${isFollowedByCurrentUser}`)
+                    div
+                        p.bio= `${user.bio}`
+                        .related-people
+                            a.following
+                                span.following-amount= `${user.following.length}`
+                                span Following
+                            a.followers
+                                span.followers-amount= `${user.followers.length}`
+                                span Followers
+                    .profile-interactions
+                        if (!isCurrentUser)
+                            button.follow #{isFollowedByCurrentUser ? 'Unfollow' : 'Follow'}
+            
+            .user-content-container
+                ul.account-nav.page-nav
+                    li
+                        a(href=`/user/${user.nickname}/`) Croaks
+
+                .user-content
+                    block userContent
+    else
+        .error-message
+            svg.class="icon"
+                use(xlink:href="/img/svgs/icons.svg#exclamation-triangle")
+            span This account doesn't exist!

@@ -1,0 +1,25 @@
+.searched-user {
+  background-color: white;
+  padding: 1.5rem;
+}
+
+.user-info {
+  cursor: pointer;
+}
+
+.user-info {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.user-info .user-photo {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+.user-info .user-nickname {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}

@@ -1,0 +1,7 @@
+extends ../searchBase
+
+block searchPage
+    .search-users(data-keyword=`${keyword}`)
+        .users.lazy-loading-container
+        .content-loader
+            p.content-loader-text

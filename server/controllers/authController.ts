@@ -69,6 +69,7 @@ export const signin = catchAsync(async (req, res, next) => {
     return next(
       new ValidationError("Invalid credentials", 401, validationIssues)
     );
+
   createSendToken(user, 200, req, res);
 });
 

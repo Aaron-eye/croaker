@@ -30,6 +30,7 @@ const getLoggedUser = async (req: Request) => {
   if (!userQuery) return null;
   userQuery.select("-__v");
   const currentUser = await userQuery;
+  if (!currentUser) return null;
 
   if (currentUser.changedPasswordAfter(decoded.iat)) return null;
 

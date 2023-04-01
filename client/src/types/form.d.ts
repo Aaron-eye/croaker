@@ -3,7 +3,8 @@ export interface IFormModel extends Object {
 }
 
 export interface IFormController extends Object {
-  displayInputErrors: Function;
+  setFieldLimit: Function;
+  limitInputLength: Function;
 }
 
 export interface IFormView extends Object {

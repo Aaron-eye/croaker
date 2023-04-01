@@ -1,4 +1,4 @@
-import { IOverlayView, IOverlayController } from "../types/overlays";
+import { IOverlayView, IOverlayController } from "../types/overlay";
 
 export default class OverlayController implements IOverlayController {
   view: IOverlayView;
@@ -19,7 +19,12 @@ export default class OverlayController implements IOverlayController {
     this.view.close(options);
   }
 
-  display() {
-    this.view.display();
+  render() {
+    this.view.render();
+  }
+
+  async displayGenericError(err: any) {
+    await this.view.displayGenericError(err);
+    return;
   }
 }

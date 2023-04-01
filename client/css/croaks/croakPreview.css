@@ -15,23 +15,6 @@
   align-items: center;
 }
 
-.croak-preview .photo-and-nick {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.croak-preview .user-photo {
-  width: 3.2rem;
-  height: 3.2rem;
-}
-
-.croak-preview .user-name {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
 .croak-preview .croak-text {
   margin-bottom: 2rem;
 }
@@ -56,19 +39,6 @@
   gap: 0.5rem;
 }
 
-.croak-preview .engagements svg {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 100px;
-
-  color: var(--dark-text);
-}
-
-.croak-preview .engagements svg:hover {
+.croak-preview .engagements:hover svg {
   background-color: var(--light-green);
-}
-
-.engagement-number {
-  font-size: 1rem;
-  font-weight: 500;
 }

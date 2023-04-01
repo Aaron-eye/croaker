@@ -1,15 +1,14 @@
+include ../users/userInfo
+
 .croak-preview.content-block
     .croak-header
-        .photo-and-nick
-            img.user-photo(src=`/img/${author.photo}` alt=`${author.nickname}`)
-            h2.user-name= `${author.nickname}`
+        +userInfo(author.photo, author.nickname)
         .post-time
             span #{postedAt}
     .croak-text
         p #{text}
     .croak-footer
         .engagements
-            button.like
-                svg.icon
-                    use(xlink:href='/img/svgs/icons.svg#heart')
+            button(class=`like ${likeClasslist}`)
+                .engagement-icon
                 span.engagement-number #{likes.length}

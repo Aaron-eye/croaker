@@ -79,6 +79,7 @@ button:disabled:hover {
   margin: 0 0 2rem 0;
 
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 2rem;
 }
@@ -96,5 +97,5 @@ button:disabled:hover {
 .content-block {
   background-color: white;
   border-radius: 10px;
-  border: 1px var(--light-gray) solid;
+  border: 1px var(--gray) solid;
 }

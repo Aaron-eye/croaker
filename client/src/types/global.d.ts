@@ -1,5 +1,5 @@
-import { IUserController } from "../types/user";
-import { IOverlayView } from "./overlays";
+import { IUserController } from "./users/user";
+import { IOverlayView } from "./overlay";
 
 declare global {
   interface IGlobalConfig {

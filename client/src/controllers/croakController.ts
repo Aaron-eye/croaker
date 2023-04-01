@@ -1,92 +1,95 @@
 import axios from "axios";
 import { ICroakModel, ICroakView } from "../types/croak";
-import croaksConfig from "../../config/croaks-config.json" assert { type: "json" };
-import getUser from "../utils/getUser";
+import { IEngagementController } from "../types/engagement";
+import EngagementController from "./engagementController";
+import getUser from "../components/users/user";
+import EngagementView from "../views/engagementView";
+import EngagementModel from "../models/engagementModel";
+
+import UserInfoView from "../views/userInfoView";
+import UserInfoController from "./users/userInfoController";
+import redirectToSignin from "../utils/users/redirectToSignin";
 
 const userController = getUser();
+const signedIn = userController.checkSignedIn();
+const engagementTypes = ["like"];
+
+interface IEngagements {
+  [key: string]: IEngagementController;
+}
 
 export default class CroakController {
   handlingLike = false;
+
   model: ICroakModel;
   view: ICroakView;
   croakId: string;
+  engagements: IEngagements = {};
 
   constructor(model: ICroakModel, view: ICroakView, croakId: string) {
     this.model = model;
     this.view = view;
     this.croakId = croakId;
 
-    if (userController.checkSignedIn())
-      this.view.checkLike(this._handleLike.bind(this));
+    engagementTypes.forEach((engagementType) => {
+      const engagementElement = this.view.getEngagementElement(engagementType);
 
-    this.setRefreshEngagementsTimeout();
-  }
+      const engagementModel = new EngagementModel();
+      const engagementView = new EngagementView(engagementElement);
+      const engagementController = new EngagementController(
+        engagementModel,
+        engagementView,
+        croakId,
+        engagementType
+      );
 
-  render(croakContainer: Element) {
-    this.view.render(croakContainer);
-  }
-
-  setRefreshEngagementsTimeout() {
-    this._refreshAllEngagements();
-    setTimeout(() => {
-      const engagementsObserverOptions = {
-        rootMargin: "0px",
-        threshold: 0.75,
-      };
-      const engagementsObserver = new IntersectionObserver(() => {
-        this._refreshAllEngagements();
-        this.setRefreshEngagementsTimeout();
-      }, engagementsObserverOptions);
-
-      engagementsObserver.observe(this.view.engagementContainer);
-    }, croaksConfig.engagementsRefreshTimeInterval);
-  }
-
-  async _refreshAllEngagements() {
-    console.log("refreshed");
-    this.refreshEngagement("like");
-  }
-
-  async refreshEngagement(engagementType: string) {
-    const croakRes = await axios({
-      method: "GET",
-      url: `/api/v1/croaks/getCroak/${this.croakId}`,
+      this.engagements[engagementType as keyof IEngagements] =
+        engagementController;
     });
 
-    if (croakRes.data.status == "success") {
-      const croak = croakRes.data.data;
-      const amountOfLikes = croak[`${engagementType}s`].length;
+    this.view.checkLike(this._handleLike.bind(this));
 
-      this.model.amountOfLikes = amountOfLikes;
-      this.view.updateEngagement(engagementType, amountOfLikes);
+    const userInfoContainer = this.view.element.querySelector(".user-info");
+    if (!userInfoContainer)
+      throw new Error(`No user info container in the croak's element!`);
 
-      const { likedByCurrentUser } = croakRes.data;
-      if (likedByCurrentUser) {
-        this.model.likedByCurrentUser = true;
-        this.view.currentUserEngage(engagementType, true);
-      }
+    const userInfoView = new UserInfoView(userInfoContainer);
+    const userInfoController = new UserInfoController(userInfoView);
+  }
+
+  async render(loaderContainer: Element) {
+    for (const engagementType of Object.keys(this.engagements)) {
+      await this.engagements[engagementType as keyof IEngagements].update();
     }
-
+    this.view.render(loaderContainer);
     return;
   }
 
-  async _handleLike() {
-    if (this.handlingLike) return;
-    this.handlingLike = true;
+  async _handleLike(e: Event) {
+    e.stopPropagation();
 
-    const likedByCurrentUser = this.model.likedByCurrentUser;
-    const likeSum = likedByCurrentUser ? -1 : 1;
+    if (!signedIn) {
+      redirectToSignin("You need to be signed in to like croaks!");
+      return;
+    }
 
-    this.view.updateEngagement("like", this.model.amountOfLikes + likeSum);
-    this.model.amountOfLikes += likeSum;
-    this.view.currentUserEngage("like");
-    this.model.likedByCurrentUser = !likedByCurrentUser;
+    const like = this.engagements.like;
+    if (like.model.resolving) return;
+    like.model.resolving = true;
 
-    const likeRes = await axios({
+    like.engage();
+    const likeOperation = like.model.engagedByCurrentUser
+      ? "likeCroak"
+      : "unlikeCroak";
+
+    const likeReq = await axios({
       method: "POST",
-      url: `/api/v1/croaks/likeCroak/${this.croakId}`,
+      url: `/api/v1/croaks/${likeOperation}/${this.croakId}`,
     });
+    like.model.resolving = false;
 
-    this.handlingLike = false;
+    const postResolveFunctions = like.postResolveFunctions;
+    postResolveFunctions.refresh?.();
+    postResolveFunctions.refresh = null;
   }
 }

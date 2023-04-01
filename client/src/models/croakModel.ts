@@ -1,4 +1,1 @@
-export default class CroakModel {
-  likedByCurrentUser: boolean = false;
-  amountOfLikes: number = 0;
-}
+export default class CroakModel {}

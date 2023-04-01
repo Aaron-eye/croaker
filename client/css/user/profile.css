@@ -1,0 +1,86 @@
+@import url("../variables.css");
+
+.profile-information {
+  width: 100%;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-information .photo-and-nick {
+  padding: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.profile-information .user-photo {
+  width: 8rem;
+  height: 8rem;
+}
+
+.profile-information .user-nickname {
+  margin: 0;
+  font-weight: 800;
+  font-size: 2.5rem;
+  color: var(--dark-text);
+}
+
+.bio {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.related-people {
+  margin: 0 auto;
+  display: flex;
+  gap: 2rem;
+  /*justify-content: center;*/
+}
+
+.related-people > * {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.profile-details {
+  padding: 1rem 2rem 2rem 2rem;
+
+  border-radius: 10px;
+  border-top: 1px var(--light-gray) solid;
+
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-content {
+  padding: 0;
+  margin: 0;
+}
+
+.follow {
+  padding: 0.5rem 1rem;
+
+  font-weight: 700;
+  font-size: 1rem;
+
+  border-radius: 100px;
+
+  background-color: var(--light-green);
+  transition: background-color 100ms linear;
+
+  color: var(--dark-text);
+  background-color: var(--light-green);
+}
+
+.follow:hover {
+  background-color: var(--gray);
+
+  transition: background-color 100ms linear;
+}

@@ -10,6 +10,17 @@ router.get(
   "/user/:nickname/startingPoint/:startingPoint",
   croakController.getUserCroaks
 );
+router.get(
+  "/likedCroaks/startingPoint/:startingPoint",
+  croakController.getLikedCroaks
+);
+router.get("/new/startingPoint/:startingPoint", croakController.getNewCroaks);
+router.get(
+  "/search/:keyword/startingPoint/:startingPoint",
+  croakController.getSearchCroaks
+);
+
 router.post("/likeCroak/:croakId", croakController.likeCroak);
+router.post("/unlikeCroak/:croakId", croakController.unlikeCroak);
 
 export default router;

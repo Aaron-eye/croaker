@@ -1,4 +1,7 @@
 doctype html
+
+include search/searchContainer
+
 html
   head
     meta(charset='UTF-8')
@@ -7,8 +10,10 @@ html
 
     link(rel='stylesheet' href='/css/main.css')
     link(rel='stylesheet' href='/css/base.css')
+    link(rel='stylesheet' href='/css/search/search.css')
     link(rel='stylesheet' href='/css/spinningLoader.css')
     link(rel='stylesheet' href='/css/overlays/overlays.css')
+    link(rel='stylesheet' href='/css/user/userInfo.css')
     link(rel='stylesheet' href='/css/croaks/croaks.css')
     block styles
     
@@ -24,22 +29,27 @@ html
           use(xlink:href='/img/svgs/icons.svg#croaker-logo')
         ul.sidebar-options
           li
-            a(href="/feed")
+            a(href="/new")
               svg.icon
                 use(xlink:href='/img/svgs/icons.svg#home')
               span Feed
 
           if currentUser
+            //- li
+            //-   a
+            //-     svg.icon
+            //-       use(xlink:href='/img/svgs/icons.svg#bell')
+            //-     span Notifications
+            //- li
+            //-   a
+            //-     svg.icon
+            //-       use(xlink:href='/img/svgs/icons.svg#bookmark')
+            //-     span Saved
             li
-              a
+              a(href=`/likedCroaks`)
                 svg.icon
-                  use(xlink:href='/img/svgs/icons.svg#bell')
-                span Notifications
-            li
-              a
-                svg.icon
-                  use(xlink:href='/img/svgs/icons.svg#bookmark')
-                span Saved
+                  use(xlink:href='/img/svgs/icons.svg#like')
+                span Liked
             li
               a(href=`/user/${currentUser.nickname}`)
                 svg.icon
@@ -60,11 +70,8 @@ html
         block content
 
       .discover-container
-        .search-container
-          svg.icon
-            use(xlink:href='/img/svgs/icons.svg#magnifying-glass')
-          input.search(type='text' placeholder='Search')
-        .trending-topics-container
-          h1 Trending topics
+        +searchContainer('secondary-search', 'croaks')
+        //- .trending-topics-container
+        //-   h1 Trending topics
 
     script(src='/bundle.js')
